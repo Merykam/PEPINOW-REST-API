@@ -16,8 +16,9 @@ return new class extends Migration
             $table->string('name');
             $table->string('description');
             $table->decimal('price');
-            $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
-           // $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
+            // $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
+            $table->unsignedBigInteger('category_id')->nullable();
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
             $table->timestamps();
         });
     }

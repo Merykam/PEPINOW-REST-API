@@ -2,64 +2,73 @@
 
 namespace App\Http\Controllers;
 use App\Models\Plante;
+use App\Models\Category;
+use App\Http\Controllers\CategoryController;
 
 use Illuminate\Http\Request;
 
 class PlantController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        // $Plante=Plante::all();
+
+
+        $Plante = Plante::select( 'Plantes.name', 'Plantes.description', 'Plantes.price', 'categories.name as categorie')
+        	->join('categories', 'categories.id', '=', 'Plantes.category_id')
+        	->get();
+        return response()->json([
+            "result"=>$Plante
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+
+    public function store(Request $request){
+        $category = Category :: findOrFail($request->category_id);
+        $plante = $category->plante()->create([
+
+            'name'=> $request->name,
+            'description'=> $request->description,
+            'price'=> $request->price,
+        ]
+
+        );
+
+        return response()->json([
+            "result"=>$plante
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+    public function show($id){
+        // $plant = Plante :: find($id);
+        
+        $Plante = Plante::select( 'Plantes.name', 'Plantes.description', 'Plantes.price', 'categories.name as categorie')
+        	->join('categories', 'categories.id', '=', 'Plantes.category_id')
+            ->where('Plantes.id', '=', $id)
+        	->get();
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
+        return response()->json([
+            "result"=>$Plante
+        ]);
     }
+    
+    // public function store(Category $Category, Request $request)
+    // {
+    //     $plante = $Category->plante()->create($request->all());
+    //     return response()->json($plante, 201);
+    // }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
+    // public function update(Request $request, Post $post, Comment $comment)
+    // {
+    //     $comment->update($request->all());
+    //     return response()->json($comment);
+    // }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
+    // public function destroy(Post $post, Comment $comment)
+    // {
+    //     $comment->delete();
+    //     return response()->json(null, 204);
+    // }
+   
 }
