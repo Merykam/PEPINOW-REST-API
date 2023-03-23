@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PlantController;
+use App\Http\Controllers\userController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,5 +22,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 // Route::post('Category', [CategoryController::class,'store']);
+Route::post('register', [userController::class,'register']);
+Route::post('login', [userController::class,'login']);
 Route::apiResource('category',CategoryController::class);
 Route::apiResource('plante',PlantController::class);
