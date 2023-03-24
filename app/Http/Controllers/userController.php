@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Resources\UserResource;
 
 class userController extends Controller
 {
@@ -49,5 +51,27 @@ class userController extends Controller
             ]);
         }
 
+    }
+
+
+    public function profile(){
+        return new UserResource(auth()->user());
+    }
+
+    public function Updateprofile(Request $request, User $User){
+        $User->update([
+            'name'=>$request->name,
+            'email'=>$request->email
+
+
+        ]);
+        return response()->json($User);
+    }
+
+    public function logout(){
+       auth()->user()->tokens()->delete();
+       return response()->json([
+        'message'=> 'logout successfully'
+    ]);
     }
 }

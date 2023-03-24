@@ -33,7 +33,25 @@ Route::middleware('auth:sanctum','isAdmin')->group(function(){
 Route::middleware('auth:sanctum','isSeller')->group(function(){
    
     Route::apiResource('plante',PlantController::class);
+   
 }
+
+
+
+
+);
+
+Route::middleware('auth:sanctum')->group(function(){
+   
+    Route::get('profile', [userController::class,'profile']);
+
+    Route::put('Updateprofile/{User}', [userController::class,'Updateprofile']);
+    
+    Route::get('logout', [userController::class,'logout']);
+}
+
+
+
 
 );
 Route::apiResource('category',CategoryController::class)->only([
@@ -45,5 +63,8 @@ Route::apiResource('plante',PlantController::class)->only([
 
 Route::post('register', [userController::class,'register']);
 Route::post('login', [userController::class,'login']);
+
+
+
 // Route::apiResource('category',CategoryController::class)->middleware('auth:sanctum');
 // Route::apiResource('plante',PlantController::class)->middleware('auth:sanctum');
