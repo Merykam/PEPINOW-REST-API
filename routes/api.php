@@ -20,9 +20,30 @@ use App\Http\Controllers\userController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::middleware('auth:sanctum','isAdmin')->group(function(){
+    Route::apiResource('category',CategoryController::class)->only([
+        'store', 'update', 'destroy'
+    ]);
+    Route::apiResource('plante',PlantController::class)->only([
+        'store', 'update', 'destroy'
+    ]);
+}
 
-// Route::post('Category', [CategoryController::class,'store']);
+);
+Route::middleware('auth:sanctum','isSeller')->group(function(){
+   
+    Route::apiResource('plante',PlantController::class);
+}
+
+);
+Route::apiResource('category',CategoryController::class)->only([
+    'index', 'show'
+]);
+Route::apiResource('plante',PlantController::class)->only([
+    'index', 'show'
+]);
+
 Route::post('register', [userController::class,'register']);
 Route::post('login', [userController::class,'login']);
-Route::apiResource('category',CategoryController::class);
-Route::apiResource('plante',PlantController::class);
+// Route::apiResource('category',CategoryController::class)->middleware('auth:sanctum');
+// Route::apiResource('plante',PlantController::class)->middleware('auth:sanctum');

@@ -34,7 +34,7 @@ class userController extends Controller
             if(Hash :: check($request->password, $userr->password)){
                 $token = $userr -> createToken('auth_token')->plainTextToken;
                 return response()->json([
-                    'message'=>'connecte successfully',
+                    'message'=>'connected successfully',
                     'token'=>$token 
                 ]);
             }else{
