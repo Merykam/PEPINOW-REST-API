@@ -61,7 +61,8 @@ class userController extends Controller
     public function Updateprofile(Request $request, User $User){
         $User->update([
             'name'=>$request->name,
-            'email'=>$request->email
+            'email'=>$request->email,
+            'password'=>Hash :: make ($request->password)
 
 
         ]);
@@ -74,4 +75,20 @@ class userController extends Controller
         'message'=> 'logout successfully'
     ]);
     }
+
+  
+
+    public function changeRole(Request $request,  User $User){
+        $User->update([
+            'role'=>$request->role
+          
+
+
+        ]);
+        // return response()->json($User);
+
+         return response()->json(['message' => 'User role has been updated']);
+    }
+
+   
 }

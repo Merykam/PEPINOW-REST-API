@@ -52,23 +52,51 @@ class PlantController extends Controller
             "result"=>$Plante
         ]);
     }
+
+    public function update(Request $request, Plante $Plante)
+    {
+        $this ->validate($request,[
+            'name'=>'required',
+            'description'=>'required',
+            'price'=>'required',
+            'category_id'=>'required'
+        ]);
+
+        $Plante->update([
+            'name'=> $request->name,
+            'description'=> $request->description,
+            'price'=> $request->price,
+            'category_id'=> $request->category_id
+
+
+        ]);
+        return response()->json($Plante);
+    }
     
-    // public function store(Category $Category, Request $request)
-    // {
-    //     $plante = $Category->plante()->create($request->all());
-    //     return response()->json($plante, 201);
-    // }
+    public function destroy(Plante $Plante)
+    {
+        $Plante->delete();
+        return response()->json(
+            [
+                'message'=>'plante deleted succefully'
+            ]
+        );
+    }
 
-    // public function update(Request $request, Post $post, Comment $comment)
-    // {
-    //     $comment->update($request->all());
-    //     return response()->json($comment);
-    // }
+    public function filterByCategory($category)
+    {
+        
+            // Filter by category name
+        $plant = Plante::join('categories', 'Plantes.category_id', '=', 'categories.id')
+                    ->select('Plantes.*', 'categories.name as category')
+                    ->where('categories.name', $category)
+                    ->get();
+        
 
-    // public function destroy(Post $post, Comment $comment)
-    // {
-    //     $comment->delete();
-    //     return response()->json(null, 204);
-    // }
+       
+
+        return response()->json($plant, 200);
+    }
+    
    
 }

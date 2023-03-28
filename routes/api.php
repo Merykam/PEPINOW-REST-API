@@ -27,6 +27,7 @@ Route::middleware('auth:sanctum','isAdmin')->group(function(){
     Route::apiResource('plante',PlantController::class)->only([
         'store', 'update', 'destroy'
     ]);
+    Route::put('changeRole/{User}', [userController::class,'changeRole']);
 }
 
 );
@@ -63,6 +64,7 @@ Route::apiResource('plante',PlantController::class)->only([
 
 Route::post('register', [userController::class,'register']);
 Route::post('login', [userController::class,'login']);
+Route::get('filterByCategory/{category}', [PlantController::class,'filterByCategory']);
 
 
 
